@@ -1,0 +1,35 @@
+:root {
+  --color-page: oklch(98% 0.003 185);
+  --color-surface: oklch(100% 0 0);
+  --color-ink: oklch(24% 0.027 222);
+  --color-muted: oklch(52% 0.019 216);
+  --color-rule: oklch(89% 0.009 210);
+  --color-rule-strong: oklch(74% 0.019 210);
+  --color-soft: oklch(95% 0.008 207);
+  --color-focus: oklch(53% 0.11 222);
+  --color-language: oklch(54% 0.12 247);
+  --color-vision: oklch(49% 0.095 183);
+  --color-interface: oklch(58% 0.095 291);
+  --color-finding: oklch(58% 0.14 41);
+  --color-selected: oklch(24% 0.027 222);
+  --color-track: oklch(83% 0.023 197);
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-title: clamp(27px, 3.3vw, 38px);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-round: 999px;
+  --ease-out: cubic-bezier(.2,.8,.2,1);
+  --dur-fast: 140ms;
+  --dur-medium: 220ms;
+}
