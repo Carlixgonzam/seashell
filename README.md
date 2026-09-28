@@ -28,8 +28,6 @@ Agrega un objeto al arreglo `events` de `src/data.js`, manteniendo el orden cron
 
 El tamaño de cada punto expresa relevancia editorial. El grosor del tramo se calcula con el número de archivos modificados en el commit asociado. Si un hito comparte commit con otro, `fileScope` delimita el recuento a una carpeta. Si no hay commit cerrado, `filesChanged` debe ser `null` y el tramo aparece discontinuo. Ni relevancia ni tamaño del diff equivalen a validación física.
 
-Los vínculos a commits y archivos apuntan a `FLAGlab/SCuLPTER`. Las mejoras que todavía están en el árbol de trabajo local se describen como tales y no reciben un enlace a un commit inexistente.
-
 ## Verificar
 
 ```sh
