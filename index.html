@@ -3,116 +3,108 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="description" content="Historia interactiva de SCuLPTER.">
-  <title>Seashell · SCuLPTER</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20 20c-1-7 5-12 12-8 7 4 4 15-4 19-10 5-22 0-22-11C6 10 17 3 29 7' fill='none' stroke='%23256770' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='20' cy='20' r='3' fill='%23256770'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#faf9f6">
+  <meta name="description" content="Una historia visual de SCuLPTER.">
+  <title>Seashell</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20 20c-1-7 5-12 12-8 7 4 4 15-4 19-10 5-22 0-22-11C6 10 17 3 29 7' fill='none' stroke='%232e6971' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="./src/styles.css">
   <script type="module" src="./src/app.js"></script>
 </head>
 <body>
-  <div class="app-shell">
-    <header class="topbar">
-      <div class="identity">
-        <svg class="shell-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 16c-1-5 3-9 8-7 6 2 5 10 0 14-7 6-18 2-18-6 0-8 8-13 17-11"></path><circle cx="16" cy="16" r="2"></circle></svg>
-        <strong>seashell</strong>
-        <span class="identity-separator">/</span>
-        <span>SCuLPTER</span>
-      </div>
-      <span class="total"><output id="total-events">15</output> hitos</span>
-    </header>
+  <header class="masthead">
+    <a class="wordmark" href="./" aria-label="Seashell, inicio">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 16c-1-5 3-9 8-7 6 2 5 10 0 14-7 6-18 2-18-6 0-8 8-13 17-11"></path></svg>
+      <span>seashell</span>
+    </a>
+    <nav class="main-nav" aria-label="Secciones"><a id="nav-spiral" href="#espiral" aria-current="page">Espiral</a><a id="nav-journal" href="#bitacora">Bitácora</a></nav>
+    
+  </header>
 
-    <main>
-      <div class="page-bar">
-        <h1>Historia</h1>
-        <div class="controls">
-          <label class="search-control">
-            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"></circle><path d="m13 13 4.5 4.5"></path></svg>
-            <span class="sr-only">Buscar hitos</span>
-            <input id="search" type="search" placeholder="Buscar" autocomplete="off">
-          </label>
-          <label class="select-control">
-            <span class="sr-only">Filtrar por área</span>
-            <select id="category-filter" aria-label="Área"></select>
-          </label>
-          <label class="select-control relevance-control">
-            <span class="sr-only">Relevancia mínima</span>
-            <select id="impact-filter" aria-label="Relevancia mínima">
-              <option value="1">Relevancia: todas</option>
-              <option value="2">Relevancia: 2+</option>
-              <option value="3">Relevancia: 3+</option>
-              <option value="4">Relevancia: 4+</option>
-              <option value="5">Relevancia: 5</option>
-            </select>
-          </label>
-          <button id="reset-filters" class="reset-button" type="button" hidden>Limpiar</button>
+  <main>
+    <section id="spiral-view" aria-label="Espiral de SCuLPTER">
+    <div class="topline">
+      <span class="eyebrow">Historia</span>
+      <div class="top-actions">
+        <span id="result-count" class="count" aria-live="polite"></span>
+        <button id="explore-toggle" class="text-button" type="button" aria-expanded="false" aria-controls="explore-panel">Explorar <span aria-hidden="true">⌄</span></button>
+      </div>
+    </div>
+
+    <section id="explore-panel" class="explore-panel" aria-label="Explorar hitos" hidden>
+      <label class="field"><span>Buscar</span><input id="search" type="search" autocomplete="off" placeholder="Título, tema o fecha"></label>
+      <label class="field"><span>Área</span><select id="category-filter"></select></label>
+      <label class="field"><span>Relevancia</span><select id="impact-filter"><option value="1">Todas</option><option value="2">2 o más</option><option value="3">3 o más</option><option value="4">4 o más</option><option value="5">5</option></select></label>
+      <button id="reset-filters" class="text-button clear-button" type="button" hidden>Limpiar</button>
+    </section>
+
+    <figure class="shell-figure">
+      <div id="map-stage" class="map-stage">
+        <svg id="spiral" viewBox="0 0 900 900" role="group" aria-labelledby="spiral-title spiral-description">
+          <title id="spiral-title">Historia de SCuLPTER</title>
+          <desc id="spiral-description">Los hitos avanzan del centro hacia afuera. El tamaño de cada punto indica relevancia y el ancho de la línea, archivos cambiados.</desc>
+          <g id="shell-chambers" aria-hidden="true"></g>
+          <g id="spiral-segments"></g>
+          <g id="spiral-nodes"></g>
+          <circle class="origin" cx="450" cy="450" r="3"></circle>
+        </svg>
+        <div id="map-tooltip" class="map-tooltip" hidden></div>
+        <div class="map-zoom" aria-label="Escala de la espiral">
+          <button id="zoom-out" type="button" aria-label="Alejar">−</button>
+          <button id="zoom-in" type="button" aria-label="Acercar">+</button>
+          <span id="zoom-level" class="sr-only" aria-live="polite">100 %</span>
         </div>
       </div>
-
-      <div class="workspace">
-        <section class="map-area" aria-label="Espiral cronológica">
-          <div class="map-topline">
-            <span>2025 — 2026</span>
-            <div class="map-tools">
-              <output id="result-count" aria-live="polite">15</output>
-              <button id="zoom-out" type="button" aria-label="Alejar">−</button>
-              <button id="zoom-in" type="button" aria-label="Acercar">+</button>
-              <span id="zoom-level" class="sr-only" aria-live="polite">100 %</span>
-            </div>
-          </div>
-
-          <div class="map-stage" id="map-stage">
-            <svg id="spiral" viewBox="0 0 840 840" role="group" aria-labelledby="spiral-title spiral-description">
-              <title id="spiral-title">Hitos de SCuLPTER en espiral</title>
-              <desc id="spiral-description">Desde el centro hacia afuera. El tamaño de cada punto representa su relevancia; el grosor del trazo, los archivos cambiados. Los rombos son hallazgos.</desc>
-              <g id="sea-contours" aria-hidden="true"></g>
-              <g id="spiral-segments"></g>
-              <g id="spiral-nodes"></g>
-              <g id="spiral-center"><circle cx="420" cy="420" r="14"></circle><circle cx="420" cy="420" r="2.5"></circle></g>
-            </svg>
-            <div id="map-tooltip" class="map-tooltip" hidden></div>
-          </div>
-
-          <div class="map-bottomline">
-            <button id="previous" class="step-button" type="button" aria-label="Hito anterior">‹</button>
-            <span class="range-date">2025</span>
-            <input id="scrubber" type="range" min="0" max="14" value="14" aria-label="Recorrer hitos en orden cronológico">
-            <span class="range-date">2026</span>
-            <button id="next" class="step-button" type="button" aria-label="Siguiente hito">›</button>
-          </div>
-          <div class="map-help">
-            <button id="help-toggle" type="button" aria-expanded="false" aria-controls="help-panel">Cómo leer la espiral</button>
-            <div id="help-panel" hidden>
-              <span>Tamaño · relevancia</span>
-              <span>Trazo · archivos</span>
-              <span>Rombo · hallazgo</span>
-              <span>Punteado · sin commit</span>
-            </div>
-          </div>
-        </section>
-
-        <aside class="detail" aria-labelledby="detail-title">
-          <div class="detail-content" id="detail-content">
-            <div class="detail-overline"><span id="event-index">15 / 15</span><time id="event-date"></time></div>
-            <h2 id="detail-title"></h2>
-            <div class="detail-tags"><span id="event-category"></span><span id="event-status"></span></div>
-            <p id="event-summary" class="summary"></p>
-            <div class="metrics">
-              <div><span>Relevancia</span><strong id="event-impact"></strong></div>
-              <div><span>Archivos</span><strong id="event-files"></strong></div>
-            </div>
-            <div class="sources"><h3>Fuentes</h3><div id="event-sources" class="source-list"></div></div>
-            <details class="more-details">
-              <summary>Detalles</summary>
-              <p id="event-change"></p>
-              <p id="event-impact-reason"></p>
+      <figcaption>
+        <div class="caption" id="detail-content">
+          <div class="caption-meta"><span id="event-index"></span><time id="event-date"></time></div>
+          <div class="caption-body"><h1 id="event-title"></h1><p id="event-summary"></p></div>
+          <div class="caption-end">
+            <details class="record">
+              <summary>Fuentes y notas</summary>
+              <div class="record-body">
+                <div id="event-sources" class="source-list"></div>
+                <p id="event-change"></p>
+                <p id="event-impact-reason"></p>
+                <p id="event-measure"></p>
+              </div>
             </details>
+            <div class="step-actions"><button id="previous" type="button" aria-label="Hito anterior">←</button><button id="next" type="button" aria-label="Siguiente hito">→</button></div>
           </div>
-          <p id="detail-empty" class="detail-empty" hidden>Sin resultados.</p>
-          <span id="step-count" class="sr-only" aria-live="polite"></span>
-        </aside>
+        </div>
+        <p id="detail-empty" class="empty" hidden>Sin resultados. <button id="empty-reset" type="button">Ver todos</button></p>
+      </figcaption>
+    </figure>
+    <span id="step-count" class="sr-only" aria-live="polite"></span>
+    </section>
+
+    <section id="journal-view" class="journal-view" aria-labelledby="journal-heading" hidden>
+      <div class="journal-heading">
+        <div><span class="eyebrow">Cuaderno de investigación</span><h1 id="journal-heading">Bitácora</h1></div>
+        <a class="playlist-link" href="https://www.youtube.com/playlist?list=PLSK7NtBWwmpQwSUi53XUK5o6-b9H3ABrO" target="_blank" rel="noopener noreferrer">Playlist de OpenCV ↗</a>
       </div>
-    </main>
-  </div>
+      <div class="journal-layout">
+        <aside class="journal-index" aria-label="Páginas de la bitácora">
+          <div class="journal-index-heading"><span>Páginas</span><button id="journal-add" type="button" aria-label="Añadir página">+</button></div>
+          <div id="journal-list" class="journal-list"></div>
+        </aside>
+        <article id="journal-page" class="journal-page" aria-label="Página seleccionada">
+          <div class="journal-page-top"><span id="journal-position"></span><select id="journal-status" aria-label="Estado de lectura"><option value="unread">Por revisar</option><option value="reading">En estudio</option><option value="applied">Aplicado</option></select></div>
+          <h2 id="journal-title"></h2>
+          <input id="journal-title-input" class="journal-title-input" type="text" maxlength="120" aria-label="Título de la página" placeholder="Sin título" hidden>
+          <p id="journal-question" class="journal-question"></p>
+          <div class="journal-links"><a id="journal-video" target="_blank" rel="noopener noreferrer">Ver video ↗</a><button id="journal-related" type="button">Ver hito ↗</button></div>
+          <label class="journal-label" for="journal-note">Notas</label>
+          <textarea id="journal-note" rows="8" placeholder="Escribe aquí lo que observaste, lo que probarías y qué evidencia falta."></textarea>
+          <label class="journal-label" for="journal-evidence">Enlace de evidencia</label>
+          <input id="journal-evidence" type="url" placeholder="https://" inputmode="url">
+          <a id="journal-evidence-link" class="journal-evidence-link" target="_blank" rel="noopener noreferrer" hidden>Abrir evidencia ↗</a>
+          <label id="journal-url-label" class="journal-label" for="journal-url-input" hidden>Enlace de referencia</label>
+          <input id="journal-url-input" type="url" placeholder="https://" inputmode="url" hidden>
+          <div class="journal-page-bottom"><span id="journal-saved" role="status"></span><button id="journal-delete" type="button" hidden>Eliminar página</button></div>
+        </article>
+      </div>
+      <div class="journal-footer"><span>Guardado en este navegador. Exporta una copia de tus notas.</span><div><button id="journal-export" type="button">Exportar</button><button id="journal-import" type="button">Importar</button><input id="journal-import-file" type="file" accept="application/json,.json" hidden></div></div>
+    </section>
+  </main>
 </body>
 </html>
