@@ -3,105 +3,115 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f7f8f7">
-  <meta name="description" content="Espiral interactiva de cambios y hallazgos de SCuLPTER.">
-  <title>Seashell · Espiral de SCuLPTER</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20 20c-1-7 5-12 12-8 7 4 4 15-4 19-10 5-22 0-22-11C6 10 17 3 29 7' fill='none' stroke='%231a5964' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='20' cy='20' r='3' fill='%23d07756'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="Historia interactiva de SCuLPTER.">
+  <title>Seashell · SCuLPTER</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20 20c-1-7 5-12 12-8 7 4 4 15-4 19-10 5-22 0-22-11C6 10 17 3 29 7' fill='none' stroke='%23256770' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='20' cy='20' r='3' fill='%23256770'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="./src/styles.css">
   <script type="module" src="./src/app.js"></script>
 </head>
 <body>
   <div class="app-shell">
     <header class="topbar">
-      <div class="brand"><span class="brand-symbol" aria-hidden="true">◉</span><strong>seashell</strong><span>/ SCuLPTER</span></div>
-      <span class="topbar-meta"><span id="total-events">15</span> hitos · 2025–2026</span>
+      <div class="identity">
+        <svg class="shell-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 16c-1-5 3-9 8-7 6 2 5 10 0 14-7 6-18 2-18-6 0-8 8-13 17-11"></path><circle cx="16" cy="16" r="2"></circle></svg>
+        <strong>seashell</strong>
+        <span class="identity-separator">/</span>
+        <span>SCuLPTER</span>
+      </div>
+      <span class="total"><output id="total-events">15</output> hitos</span>
     </header>
 
     <main>
-      <div class="heading-row">
-        <div>
-          <h1>Espiral de cambios</h1>
-          <p>Del lenguaje a la validación física. Cada tramo representa un hito documentado.</p>
+      <div class="page-bar">
+        <h1>Historia</h1>
+        <div class="controls">
+          <label class="search-control">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"></circle><path d="m13 13 4.5 4.5"></path></svg>
+            <span class="sr-only">Buscar hitos</span>
+            <input id="search" type="search" placeholder="Buscar" autocomplete="off">
+          </label>
+          <label class="select-control">
+            <span class="sr-only">Filtrar por área</span>
+            <select id="category-filter" aria-label="Área"></select>
+          </label>
+          <label class="select-control relevance-control">
+            <span class="sr-only">Relevancia mínima</span>
+            <select id="impact-filter" aria-label="Relevancia mínima">
+              <option value="1">Relevancia: todas</option>
+              <option value="2">Relevancia: 2+</option>
+              <option value="3">Relevancia: 3+</option>
+              <option value="4">Relevancia: 4+</option>
+              <option value="5">Relevancia: 5</option>
+            </select>
+          </label>
+          <button id="reset-filters" class="reset-button" type="button" hidden>Limpiar</button>
         </div>
-        <span class="heading-note">Corte del registro: 28 sep 2026</span>
       </div>
 
-      <section class="control-bar" aria-label="Controles de la espiral">
-        <div id="filters" class="filters" role="group" aria-label="Filtrar por área"></div>
-        <label class="search-field">
-          <span class="sr-only">Buscar hito</span>
-          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"></circle><path d="m13 13 4.5 4.5"></path></svg>
-          <input id="search" type="search" placeholder="Buscar hito" autocomplete="off">
-        </label>
-        <label class="impact-filter" for="min-impact">Relevancia ≥ <output id="impact-output" for="min-impact">1</output>
-          <input id="min-impact" type="range" min="1" max="5" value="1">
-        </label>
-      </section>
-
       <div class="workspace">
-        <section class="map-panel" aria-labelledby="map-title">
-          <div class="map-toolbar">
-            <div><h2 id="map-title">Mapa</h2><span id="result-count" aria-live="polite">15 hitos visibles</span></div>
-            <div class="zoom-controls" role="group" aria-label="Ampliación del mapa">
+        <section class="map-area" aria-label="Espiral cronológica">
+          <div class="map-topline">
+            <span>2025 — 2026</span>
+            <div class="map-tools">
+              <output id="result-count" aria-live="polite">15</output>
               <button id="zoom-out" type="button" aria-label="Alejar">−</button>
-              <span id="zoom-level">100 %</span>
               <button id="zoom-in" type="button" aria-label="Acercar">+</button>
+              <span id="zoom-level" class="sr-only" aria-live="polite">100 %</span>
             </div>
           </div>
 
           <div class="map-stage" id="map-stage">
             <svg id="spiral" viewBox="0 0 840 840" role="group" aria-labelledby="spiral-title spiral-description">
-              <title id="spiral-title">Espiral de cambios y hallazgos</title>
-              <desc id="spiral-description">Los hitos se leen desde el centro hacia afuera. El tamaño muestra relevancia editorial de uno a cinco; el grosor de los tramos muestra archivos modificados en commits.</desc>
-              <g id="spiral-guides"></g>
+              <title id="spiral-title">Hitos de SCuLPTER en espiral</title>
+              <desc id="spiral-description">Desde el centro hacia afuera. El tamaño de cada punto representa su relevancia; el grosor del trazo, los archivos cambiados. Los rombos son hallazgos.</desc>
+              <g id="sea-contours" aria-hidden="true"></g>
               <g id="spiral-segments"></g>
               <g id="spiral-nodes"></g>
-              <g id="spiral-center"><circle cx="420" cy="420" r="16"></circle><circle cx="420" cy="420" r="3"></circle></g>
+              <g id="spiral-center"><circle cx="420" cy="420" r="14"></circle><circle cx="420" cy="420" r="2.5"></circle></g>
             </svg>
-            <div id="map-tooltip" class="map-tooltip" role="status" hidden></div>
+            <div id="map-tooltip" class="map-tooltip" hidden></div>
           </div>
 
-          <div class="map-footer">
-            <span>2025</span>
+          <div class="map-bottomline">
+            <button id="previous" class="step-button" type="button" aria-label="Hito anterior">‹</button>
+            <span class="range-date">2025</span>
             <input id="scrubber" type="range" min="0" max="14" value="14" aria-label="Recorrer hitos en orden cronológico">
-            <span>2026</span>
+            <span class="range-date">2026</span>
+            <button id="next" class="step-button" type="button" aria-label="Siguiente hito">›</button>
           </div>
-
-          <div class="visual-key" aria-label="Cómo leer la espiral">
-            <span><i class="key-dot"></i> Tamaño: relevancia 1–5</span>
-            <span><i class="key-line"></i> Grosor: archivos modificados</span>
-            <span><i class="key-diamond"></i> Hallazgo</span>
-            <span><i class="key-ring"></i> Validación física pendiente</span>
+          <div class="map-help">
+            <button id="help-toggle" type="button" aria-expanded="false" aria-controls="help-panel">Cómo leer la espiral</button>
+            <div id="help-panel" hidden>
+              <span>Tamaño · relevancia</span>
+              <span>Trazo · archivos</span>
+              <span>Rombo · hallazgo</span>
+              <span>Punteado · sin commit</span>
+            </div>
           </div>
         </section>
 
-        <aside class="detail-panel" aria-labelledby="detail-title">
-          <div class="detail-top"><span>Hito seleccionado</span><span id="event-index">—</span></div>
+        <aside class="detail" aria-labelledby="detail-title">
           <div class="detail-content" id="detail-content">
-            <div class="detail-meta"><time id="event-date"></time><span id="event-category"></span></div>
+            <div class="detail-overline"><span id="event-index">15 / 15</span><time id="event-date"></time></div>
             <h2 id="detail-title"></h2>
-            <p id="event-summary" class="detail-summary"></p>
-            <div class="impact-readout">
-              <div class="readout-head"><span>Relevancia editorial</span><strong id="event-impact"></strong></div>
-              <div class="impact-track"><span id="impact-fill"></span></div>
-              <p id="event-impact-reason"></p>
+            <div class="detail-tags"><span id="event-category"></span><span id="event-status"></span></div>
+            <p id="event-summary" class="summary"></p>
+            <div class="metrics">
+              <div><span>Relevancia</span><strong id="event-impact"></strong></div>
+              <div><span>Archivos</span><strong id="event-files"></strong></div>
             </div>
-            <dl class="detail-facts">
-              <div><dt>Estado</dt><dd id="event-status"></dd></div>
-              <div><dt>Archivos cambiados</dt><dd id="event-files"></dd></div>
-            </dl>
-            <div class="detail-block"><h3>Qué cambió</h3><p id="event-change"></p></div>
-            <div class="detail-block"><h3>Evidencia</h3><div id="event-sources" class="source-list"></div></div>
+            <div class="sources"><h3>Fuentes</h3><div id="event-sources" class="source-list"></div></div>
+            <details class="more-details">
+              <summary>Detalles</summary>
+              <p id="event-change"></p>
+              <p id="event-impact-reason"></p>
+            </details>
           </div>
-          <p id="detail-empty" class="detail-empty" hidden>No hay hitos con estos filtros.</p>
-          <div class="detail-actions"><button id="previous" type="button" aria-label="Hito anterior">← Anterior</button><span id="step-count" aria-live="polite"></span><button id="next" type="button" aria-label="Siguiente hito">Siguiente →</button></div>
+          <p id="detail-empty" class="detail-empty" hidden>Sin resultados.</p>
+          <span id="step-count" class="sr-only" aria-live="polite"></span>
         </aside>
       </div>
-
-      <details class="method-note">
-        <summary>Cómo se determina la relevancia</summary>
-        <p>La escala de 1 a 5 es una clasificación editorial del alcance del hito: 1 cambio local, 2 herramienta o mantenimiento, 3 subsistema, 4 una parte central de la tubería y 5 una regla fundacional, una integración decisiva o un bloqueo experimental. El grosor del tramo usa el número de archivos modificados en el commit; cuando no hay commit, se muestra sin esa medida. Ninguna de las dos medidas equivale a validación física.</p>
-      </details>
     </main>
   </div>
 </body>
